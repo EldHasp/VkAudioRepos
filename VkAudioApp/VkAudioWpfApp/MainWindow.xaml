@@ -7,12 +7,9 @@
         xmlns:attachments="clr-namespace:VkNet.Model.Attachments;assembly=VkNet"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.Resources>
-        <attachments:Audio x:Key="www"/>
-    </Window.Resources>
-    <Window.DataContext>
+    <d:Window.DataContext>
         <local:VkAudioVM/>
-    </Window.DataContext>
+    </d:Window.DataContext>
     <StackPanel>
         <TextBlock Text="{Binding IsAuthorize, Mode=OneWay}" />
         <TextBox Text="{Binding Login}"/>

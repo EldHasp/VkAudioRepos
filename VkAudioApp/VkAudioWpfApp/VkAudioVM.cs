@@ -10,7 +10,7 @@ namespace VkAudioWpfApp
     public class VkAudioVM : OnPropertyChangedClass
     {
         /// <summary>Поле для Model</summary>
-        private readonly MediaPlayerIMP model = new MediaPlayerIMP();
+        private readonly MediaPlayerIMP model = new MediaPlayerIMP(0);
 
         #region Поля для хранения значений свойств
         private string _login = "Логин";
@@ -75,5 +75,9 @@ namespace VkAudioWpfApp
             AuthorizeCommand = new RelayCommand(AuthorizeMethod, AuthorizeCanMethod);
             GetAudiosCommand = new RelayCommand(GetAudiosMethod, GetAudiosCanMethod);
         }
+        /// <summary>Конструктор с передачей ID</summary>
+        public VkAudioVM(ulong applicationID)
+            : this()
+            => model = new MediaPlayerIMP(applicationID);
     }
 }

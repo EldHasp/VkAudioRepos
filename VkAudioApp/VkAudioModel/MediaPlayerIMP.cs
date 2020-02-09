@@ -3,6 +3,7 @@ using System;
 using VkNet;
 using VkNet.Abstractions;
 using VkNet.AudioBypassService.Extensions;
+using VkNet.Enums.Filters;
 using VkNet.Model;
 using VkNet.Model.Attachments;
 using VkNet.Model.RequestParams;
@@ -18,15 +19,22 @@ namespace VkAudioModel
         private readonly IVkApi VkApi;
         /// <summary>Поле с ServiceCollection</summary>
         private readonly ServiceCollection ServiceCollection;
+        /// <summary>ID приложения - присваивается VK</summary>
+        public readonly ulong ApplicationId;
 
         /// <summary>Конструктор по умолчанию</summary>
-        public MediaPlayerIMP()
+        private MediaPlayerIMP()
         {
-
             ServiceCollection = new ServiceCollection();
             ServiceCollection.AddAudioBypass();
             VkApi = new VkApi(ServiceCollection);
         }
+
+        /// <summary>Конструктор с передачей ID</summary>
+        /// <param name="applicationId"></param>
+        public MediaPlayerIMP(ulong applicationId)
+            : this()
+            => ApplicationId = applicationId;
 
         /// <summary>Метод авторизации. </summary>
         /// <param name="login">Логин</param>
@@ -36,14 +44,10 @@ namespace VkAudioModel
         {
             ApiAuthParams apiAuthParams = new ApiAuthParams
             {
+                ApplicationId = this.ApplicationId,
                 Login = login,
                 Password = password,
-                TwoFactorAuthorization = () =>
-                {
-                    /// Тестовый код
-                    Console.WriteLine(" > Код двухфакторной аутентификации:");
-                    return Console.ReadLine();
-                }
+                Settings= Settings.All
             };
             VkApi.Authorize(apiAuthParams);
 

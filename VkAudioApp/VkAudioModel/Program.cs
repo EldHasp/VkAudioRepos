@@ -2,14 +2,14 @@
 
 namespace VkAudioModel
 {
-    public class Program
+    public partial class Program
     {
 
-        static MediaPlayerIMP IMP = new MediaPlayerIMP();
+        private static MediaPlayerIMP IMP;
 
         private static void Main(string[] args)
         {
-
+            IMP = new MediaPlayerIMP(appID);
             Console.WriteLine(" > Номер телефона/E-mail:");
             var login = Console.ReadLine();
 
@@ -21,10 +21,10 @@ namespace VkAudioModel
             if (auth)
                 Console.WriteLine("Авторизация успешна");
             else
-            Console.WriteLine("Авторизация провалилась");
+                Console.WriteLine("Авторизация провалилась");
 
             var audios = IMP.GetAudios(5);
-            foreach(var audio in audios)
+            foreach (var audio in audios)
             {
                 Console.WriteLine($"{audio.Artist} {audio.Album} {audio.Title}");
             }
@@ -32,5 +32,4 @@ namespace VkAudioModel
             Console.ReadLine();
         }
     }
-
 }
