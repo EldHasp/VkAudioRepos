@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkAudioModel", "VkAudioModel\VkAudioModel.csproj", "{487C5948-BA6B-4A59-9350-A45281123D4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{487C5948-BA6B-4A59-9350-A45281123D4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{487C5948-BA6B-4A59-9350-A45281123D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{487C5948-BA6B-4A59-9350-A45281123D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{487C5948-BA6B-4A59-9350-A45281123D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3D7F8EF-6638-4B35-A0EE-FDCFFC07F6B6}
+	EndGlobalSection
+EndGlobal
