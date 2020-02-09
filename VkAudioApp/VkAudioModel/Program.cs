@@ -11,19 +11,11 @@ namespace VkAudioModel
 {
     public class Program
     {
-        private static IVkApi _api;
 
-        // ReSharper disable once UnusedParameter.Local
+        static MediaPlayerIMP IMP = new MediaPlayerIMP();
+
         private static void Main(string[] args)
         {
-            MediaPlayerIMP iMP = new MediaPlayerIMP();
-            iMP.PL.Add(new PlayList());
-            iMP.PL.Last().Name = "favorite";
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddAudioBypass();
-
-            _api = new VkApi(serviceCollection);
 
             Console.WriteLine(" > Номер телефона/E-mail:");
             var login = Console.ReadLine();
@@ -31,33 +23,19 @@ namespace VkAudioModel
             Console.WriteLine(" > Пароль:");
             var password = Console.ReadLine();
 
-            _api.Authorize(new ApiAuthParams
+            bool auth = IMP.Authorize(login, password);
+
+            if (auth)
+                Console.WriteLine("Авторизация успешна");
+            else
+            Console.WriteLine("Авторизация провалилась");
+
+            var audios = IMP.GetAudios(5);
+            foreach(var audio in audios)
             {
-                Login = login,
-                Password = password,
-                TwoFactorAuthorization = () =>
-                {
-                    Console.WriteLine(" > Код двухфакторной аутентификации:");
-                    return Console.ReadLine();
-                }
-            });
-
-            Console.WriteLine($" > Access Token: {_api.Token}");
-
-
-            var audios = _api.Audio.Get(new AudioGetParams { Count = 5 });
-            foreach (var audio in audios)
-            {
-                iMP.PL[0].Songs.Add(new Song());
-                iMP.PL[0].Songs.Last().SongName = audio.Artist + " - " + audio.Title;
-                iMP.PL[0].Songs.Last().UrlFromVk = audio.Url.ToString();
+                Console.WriteLine($"{audio.Artist} {audio.Album} {audio.Title}");
             }
 
-            foreach (var itemSong in iMP.PL[0].Songs)
-            {
-                Console.WriteLine(itemSong.SongName);
-                Console.WriteLine("Ссылка на песню: " + itemSong.UrlFromVk);
-            }
             Console.ReadLine();
         }
     }
