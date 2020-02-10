@@ -8,31 +8,37 @@ namespace VkAudioModel
         /// <remarks>ID приложения можно получить по адресу https://vknet.github.io/vk/authorize/ </remarks>
         private static readonly ulong appID = 1234567;
 
-        private static MediaPlayerIMP IMP;
+        private static MediaPlayerIMP model;
 
         private static void Main(string[] args)
         {
-            IMP = new MediaPlayerIMP(appID);
+            model = new MediaPlayerIMP(appID, InputSmsCode);
             Console.WriteLine(" > Номер телефона/E-mail:");
             var login = Console.ReadLine();
 
             Console.WriteLine(" > Пароль:");
             var password = Console.ReadLine();
 
-            bool auth = IMP.Authorize(login, password);
+            bool auth = model.AuthorizeTask(login, password).Result;
 
             if (auth)
                 Console.WriteLine("Авторизация успешна");
             else
                 Console.WriteLine("Авторизация провалилась");
 
-            var audios = IMP.GetAudios(5);
+            var audios = model.GetAudios(5);
             foreach (var audio in audios)
             {
                 Console.WriteLine($"{audio.Artist} {audio.Album} {audio.Title}");
             }
 
             Console.ReadLine();
+        }
+
+        private static string InputSmsCode()
+        {
+            Console.WriteLine("Enter Code:");
+            return Console.ReadLine();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using Common;
 using VkAudioModel;
 using VkNet.Model.Attachments;
@@ -10,12 +11,13 @@ namespace VkAudioWpfApp
     public class VkAudioVM : OnPropertyChangedClass
     {
         /// <summary>Поле для Model</summary>
-        private readonly MediaPlayerIMP model = new MediaPlayerIMP(0);
+        private readonly MediaPlayerIMP model;
 
         #region Поля для хранения значений свойств
         private string _login = "Логин";
-        private string _password =  "Пароль";
-        private bool _isAuthorize;
+        private string _password = "Пароль";
+        private bool _isAuthorizeCompleted;
+        private bool _isAuthorizeRun;
         #endregion
 
         /// <summary>Логин</summary>
@@ -24,7 +26,10 @@ namespace VkAudioWpfApp
         public string Password { get => _password; set => SetProperty(ref _password, value); }
 
         /// <summary>Прошла ли авторизация</summary>
-        public bool IsAuthorize { get => _isAuthorize; private set => SetProperty(ref _isAuthorize, value); }
+        public bool IsAuthorizeCompleted { get => _isAuthorizeCompleted; private set => SetProperty(ref _isAuthorizeCompleted, value); }
+
+        /// <summary>Выполняется авторизация</summary>
+        public bool IsAuthorizeRun { get => _isAuthorizeRun; private set => SetProperty(ref _isAuthorizeRun, value); }
 
         /// <summary>Коллекция треков</summary>
         public ObservableCollection<Audio> Audios { get; }
@@ -35,10 +40,14 @@ namespace VkAudioWpfApp
         /// <summary>Команда загрузки песен</summary>
         public RelayCommand GetAudiosCommand { get; }
 
-        /// <summary>Исполняющий метод комнды</summary>
+        /// <summary>Исполняющий метод команды</summary>
         /// <param name="parameter">Параметр команды</param>
-        private void AuthorizeMethod(object parameter)
-            => IsAuthorize = model.Authorize(Login, Password);
+        private async void AuthorizeMethodAsync(object parameter)
+        {
+            IsAuthorizeRun = true;
+            IsAuthorizeCompleted = await model.AuthorizeTask(Login, Password);
+            IsAuthorizeRun = false;
+        }
 
         /// <summary>Метод состояния команды авторизации</summary>
         /// <param name="parameter">Параметр команды</param>
@@ -46,9 +55,9 @@ namespace VkAudioWpfApp
         /// <remarks>Команда может быть выполнена, если авторизации ещё не было
         /// и свойства Login и Password не пустые</remarks>
         private bool AuthorizeCanMethod(object parameter)
-            => !IsAuthorize && !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
+            => !IsAuthorizeCompleted && !IsAuthorizeRun && !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
 
-        /// <summary>Исполняющий метод комнды авторизации загрузки песен</summary>
+        /// <summary>Исполняющий метод команды авторизации загрузки песен</summary>
         /// <param name="parameter">Параметр команды</param>
         private void GetAudiosMethod(object parameter)
         {
@@ -66,18 +75,20 @@ namespace VkAudioWpfApp
         /// <remarks>Команда может быть выполнена, если авторизации выполнена
         /// и параметр можно преобразовать в целое число</remarks>
         private bool GetAudiosCanMethod(object parameter)
-            => IsAuthorize && (parameter is int || (parameter is string str && int.TryParse(str, out int _)));
+            => IsAuthorizeCompleted && (parameter is int || (parameter is string str && int.TryParse(str, out int _)));
 
         /// <summary>Конструктор по умолчанию</summary>
         public VkAudioVM()
         {
             /// Инициализация команд методами
-            AuthorizeCommand = new RelayCommand(AuthorizeMethod, AuthorizeCanMethod);
+            AuthorizeCommand = new RelayCommand(AuthorizeMethodAsync, AuthorizeCanMethod);
             GetAudiosCommand = new RelayCommand(GetAudiosMethod, GetAudiosCanMethod);
         }
         /// <summary>Конструктор с передачей ID</summary>
-        public VkAudioVM(ulong applicationID)
+        /// <param name="applicationID">ID приложения полученный от VK</param>
+        /// <param name="inputSmsCode">Делегат для получения строки с кодом входа</param>
+        public VkAudioVM(ulong applicationID, Func<string> inputSmsCode)
             : this()
-            => model = new MediaPlayerIMP(applicationID);
+            => model = new MediaPlayerIMP(applicationID, inputSmsCode);
     }
 }

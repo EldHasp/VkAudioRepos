@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using VkNet;
 using VkNet.Abstractions;
 using VkNet.AudioBypassService.Extensions;
@@ -32,28 +33,36 @@ namespace VkAudioModel
 
         /// <summary>Конструктор с передачей ID</summary>
         /// <param name="applicationId"></param>
-        public MediaPlayerIMP(ulong applicationId)
+        public MediaPlayerIMP(ulong applicationId, Func<string> inputSmsCode)
             : this()
-            => ApplicationId = applicationId;
+        {
+            ApplicationId = applicationId;
+            InputSmsCode = inputSmsCode;
+        }
+
+        /// <summary>Поле с делегатом метода для ввода кода SMS</summary>
+        private readonly Func<string> InputSmsCode;
 
         /// <summary>Метод авторизации. </summary>
         /// <param name="login">Логин</param>
         /// <param name="password">Пароль</param>
         /// <returns>При успешной авторизации возращает <see langword="true"/></returns>
-        public bool Authorize(string login, string password)
-        {
-            ApiAuthParams apiAuthParams = new ApiAuthParams
+        public Task<bool> AuthorizeTask(string login, string password)
+            => Task.Factory.StartNew(() =>
             {
-                ApplicationId = this.ApplicationId,
-                Login = login,
-                Password = password,
-                Settings= Settings.All
-            };
-            VkApi.Authorize(apiAuthParams);
+                ApiAuthParams apiAuthParams = new ApiAuthParams
+                {
+                    ApplicationId = this.ApplicationId,
+                    Login = login,
+                    Password = password,
+                    Settings = Settings.All,
+                    TwoFactorAuthorization = InputSmsCode
+                };
+                VkApi.Authorize(apiAuthParams);
 
-            return VkApi.IsAuthorized;
+                return VkApi.IsAuthorized;
 
-        }
+            });
 
         /// <summary>Получить песни</summary>
         /// <param name="countTrack">Количество треков песен</param>

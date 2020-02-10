@@ -23,9 +23,9 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type attachments:Audio}">
                     <TextBlock>
-                        <Run Text="{Binding Title}"/>
-                        <Run Text="{Binding Album}"/>
-                        <Run Text="{Binding Artist}"/>
+                        <Run Text="{Binding Title, Mode=OneWay}"/>
+                        <Run Text="{Binding Album, Mode=OneWay}"/>
+                        <Run Text="{Binding Artist, Mode=OneWay}"/>
                     </TextBlock>
                 </DataTemplate>
             </ListBox.ItemTemplate>
