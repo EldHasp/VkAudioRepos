@@ -4,6 +4,9 @@ namespace VkAudioModel
 {
     public partial class Program
     {
+        /// <summary>ApplicationID от VK</summary>
+        /// <remarks>ID приложения можно получить по адресу https://vknet.github.io/vk/authorize/ </remarks>
+        private static readonly ulong appID = 1234567;
 
         private static MediaPlayerIMP IMP;
 

@@ -13,6 +13,12 @@ namespace VkAudioWpfApp
     /// </summary>
     public partial class App : Application
     {
+
+        /// <summary>Значение ID приложения</summary>
+        /// <remarks>ID приложения можно получить по адресу https://vknet.github.io/vk/authorize/ </remarks>
+        private static readonly ulong appID = 1234567;
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
