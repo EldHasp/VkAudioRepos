@@ -1,4 +1,4 @@
-﻿<Window x:Class="VkAudioWpfApp.SmsCodeWind"
+﻿<Window x:Class="VkAudioWpfApp.SecondAuthorizationCodeWind"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         mc:Ignorable="d" SizeToContent="Height"
         Title="SmsCodeWind" Width="100">
     <StackPanel>
-        <TextBlock Text="Код из SMS" TextAlignment="Center"/>
+        <TextBlock Text="Код" TextAlignment="Center"/>
         <TextBox x:Name="tBoxCode"/>
         <Button x:Name="btnSend" Content="Отправить" Click="Send_Click"/>
     </StackPanel>

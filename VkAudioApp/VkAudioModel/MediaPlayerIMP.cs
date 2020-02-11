@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using VkAudioModel.DTO;
 using VkNet;
 using VkNet.Abstractions;
 using VkNet.AudioBypassService.Extensions;
@@ -67,11 +70,14 @@ namespace VkAudioModel
         /// <summary>Получить песни</summary>
         /// <param name="countTrack">Количество треков песен</param>
         /// <returns>Соллекцию с треками</returns>
-        public VkCollection<Audio> GetAudios(int countTrack)
+        public IEnumerable<AudioDTO> GetAudios(int countTrack)
         {
-            var audios = VkApi.Audio.Get(new AudioGetParams { Count = countTrack });
+            //var audios = VkApi.Audio.Get(new AudioGetParams { Count = countTrack });
 
-            return audios;
+            return VkApi.Audio
+                .Get(new AudioGetParams { Count = countTrack })
+                .Select(audio => new AudioDTO(audio))
+                .ToArray();
         }
 
 

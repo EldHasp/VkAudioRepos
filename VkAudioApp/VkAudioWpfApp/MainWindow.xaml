@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VkAudioWpfApp"
-        xmlns:attachments="clr-namespace:VkNet.Model.Attachments;assembly=VkNet"
+        xmlns:dto="clr-namespace:VkAudioModel.DTO;assembly=VkAudioModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="250" Width="250">
     <d:Window.DataContext>
@@ -21,10 +21,10 @@
                 CommandParameter="5"/>
         <ListBox ItemsSource="{Binding Audios}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type attachments:Audio}">
+                <DataTemplate DataType="{x:Type dto:AudioDTO}">
                     <TextBlock>
+                        <Run Text="{Binding Id, Mode=OneWay}"/>
                         <Run Text="{Binding Title, Mode=OneWay}"/>
-                        <Run Text="{Binding Album, Mode=OneWay}"/>
                         <Run Text="{Binding Artist, Mode=OneWay}"/>
                     </TextBlock>
                 </DataTemplate>

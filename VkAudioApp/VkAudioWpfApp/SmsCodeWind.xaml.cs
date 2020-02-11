@@ -6,9 +6,9 @@ namespace VkAudioWpfApp
     /// <summary>
     /// Логика взаимодействия для SmsCodeWind.xaml
     /// </summary>
-    public partial class SmsCodeWind : Window
+    public partial class SecondAuthorizationCodeWind : Window
     {
-        public SmsCodeWind()
+        public SecondAuthorizationCodeWind()
         {
             InitializeComponent();
         }

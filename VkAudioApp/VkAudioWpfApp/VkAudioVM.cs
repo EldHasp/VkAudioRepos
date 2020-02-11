@@ -2,20 +2,23 @@
 using System.Collections.ObjectModel;
 using Common;
 using VkAudioModel;
-using VkNet.Model.Attachments;
+using VkAudioModel.DTO;
 
 namespace VkAudioWpfApp
 {
 
     /// <summary>ViewModel</summary>
-    public class VkAudioVM : OnPropertyChangedClass
+    public partial  class VkAudioVM : OnPropertyChangedClass
     {
         /// <summary>Поле для Model</summary>
         private readonly MediaPlayerIMP model;
 
+        private static string loginDefault  = "Логин";
+        private static string passwordDefault = "Пароль";
+
         #region Поля для хранения значений свойств
-        private string _login = "Логин";
-        private string _password = "Пароль";
+        private string _login = loginDefault;
+        private string _password = passwordDefault;
         private bool _isAuthorizeCompleted;
         private bool _isAuthorizeRun;
         #endregion
@@ -32,8 +35,8 @@ namespace VkAudioWpfApp
         public bool IsAuthorizeRun { get => _isAuthorizeRun; private set => SetProperty(ref _isAuthorizeRun, value); }
 
         /// <summary>Коллекция треков</summary>
-        public ObservableCollection<Audio> Audios { get; }
-            = new ObservableCollection<Audio>();
+        public ObservableCollection<AudioDTO> Audios { get; }
+            = new ObservableCollection<AudioDTO>();
 
         /// <summary>Команда авторизации</summary>
         public RelayCommand AuthorizeCommand { get; }
@@ -47,6 +50,7 @@ namespace VkAudioWpfApp
             IsAuthorizeRun = true;
             IsAuthorizeCompleted = await model.AuthorizeTask(Login, Password);
             IsAuthorizeRun = false;
+            AuthorizeCommand.Invalidate();
         }
 
         /// <summary>Метод состояния команды авторизации</summary>
@@ -64,7 +68,7 @@ namespace VkAudioWpfApp
             if (parameter is int count || (parameter is string str && int.TryParse(str, out count)))
             {
                 Audios.Clear();
-                foreach (Audio audio in model.GetAudios(count))
+                foreach (AudioDTO audio in model.GetAudios(count))
                     Audios.Add(audio);
             }
         }

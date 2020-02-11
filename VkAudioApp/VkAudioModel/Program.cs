@@ -29,7 +29,7 @@ namespace VkAudioModel
             var audios = model.GetAudios(5);
             foreach (var audio in audios)
             {
-                Console.WriteLine($"{audio.Artist} {audio.Album} {audio.Title}");
+                Console.WriteLine($"{audio.Id} {audio.Artist} {audio.Title}");
             }
 
             Console.ReadLine();

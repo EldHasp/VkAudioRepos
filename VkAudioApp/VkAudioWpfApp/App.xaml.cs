@@ -29,7 +29,7 @@ namespace VkAudioWpfApp
         /// <returns>Возвращает string с введёнными даными</returns>
         private string InputStringShowDialog()
         {
-            SmsCodeWind smsCodeWind = new SmsCodeWind();
+            SecondAuthorizationCodeWind smsCodeWind = new SecondAuthorizationCodeWind();
             smsCodeWind.ShowDialog();
             if (smsCodeWind.DialogResult == true)
                 return smsCodeWind.Code;

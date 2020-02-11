@@ -35,7 +35,7 @@ namespace Common
         public void Invalidate()
             => Application.Current.Dispatcher.BeginInvoke
             (
-                new Action(() =>CanExecuteChanged?.Invoke(this, EventArgs.Empty)), 
+                new Action(() => CanExecuteChanged?.Invoke(this, EventArgs.Empty)),
                 null
             );
 

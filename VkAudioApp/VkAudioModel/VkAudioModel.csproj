@@ -142,6 +142,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\AudioDTO.cs" />
     <Compile Include="MediaPlayerIMP.cs" />
     <Compile Include="PlayList.cs" />
     <Compile Include="ProgramAppID.secret.cs" />
